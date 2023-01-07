@@ -1,3 +1,4 @@
+import 'package:backupmanager/button_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,12 +21,31 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Card(
-        shape: RoundedRectangleBorder(
+      child: Container(
+        margin: const EdgeInsets.only(left: 5),
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
+          child: Dismissible(
+            onDismissed: ((direction) {
+              context.read<DataProvider>().deleteTask(task);
+            }),
+            direction: DismissDirection.endToStart,
+            key: ValueKey(task),
+            background: Container(
+              padding: const EdgeInsets.only(right: 20),
+              alignment: Alignment.centerRight,
+              color: Colors.red,
+              child: const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+            child: Container(
+              color: const Color(0xFF52796F),
+              child: taskCardContainer(context),
+            ),
+          ),
         ),
-        color: const Color(0xFF52796F),
-        child: taskCardContainer(context),
       ),
     );
   }
@@ -39,36 +59,37 @@ class TaskCard extends StatelessWidget {
             task.command,
             maxLines: 1,
           ),
-          trailing: SizedBox(
-            width: 24 * 2,
-            height: 24,
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Press and hold down to delete."),
-                    ),
-                  ),
-                  onLongPress: () async {
-                    await context.read<DataProvider>().deleteTask(task);
-                  },
-                  child: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    await taskExecutor.run();
-                  },
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.greenAccent,
-                  ),
-                ),
-              ],
+          leading: GestureDetector(
+            onTap: () async {
+              await taskExecutor.run();
+            },
+            child: const Icon(
+              Icons.play_arrow,
+              color: Colors.greenAccent,
             ),
+          ),
+          trailing: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Text(
+                "Dry run",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 5),
+                child: Switch(
+                  value: context
+                      .watch<ButtonProvider>()
+                      .getDryRunMapItem(task.id!),
+                  onChanged: (value) {
+                    taskExecutor.dryRun = value;
+                    context
+                        .read<ButtonProvider>()
+                        .changeDryRunMap(task.id!, value);
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         text != null

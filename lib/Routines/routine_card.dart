@@ -4,60 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/data_provider.dart';
 
-class RoutineCard extends StatefulWidget {
+class RoutineCard extends StatelessWidget {
   final Routine routine;
-  const RoutineCard(
-    this.routine, {
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  _RoutineCardState createState() => _RoutineCardState();
-}
-
-class _RoutineCardState extends State<RoutineCard> {
-  Routine? routine;
-  bool _first = true;
-
-  @override
-  void initState() {
-    routine = widget.routine;
-    super.initState();
-  }
+  const RoutineCard(this.routine, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (() {
-        if (_first) {
-          Navigator.pushNamed(context, "/routine", arguments: routine);
-        } else {
-          context.read<DataProvider>().deleteRoutine(routine!);
-        }
+        Navigator.pushNamed(context, "/routine", arguments: routine);
       }),
-      onHorizontalDragEnd: ((DragEndDetails details) {
-        if (details.primaryVelocity! < 0) {
-          setState(() {
-            _first = !_first;
-          });
-        }
-      }),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        color: const Color(0xFF52796F),
-        child: Center(
-          child: AnimatedCrossFade(
-            duration: const Duration(milliseconds: 200),
-            firstChild: Text(routine!.title),
-            secondChild: const Icon(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(40),
+        child: Dismissible(
+          onDismissed: ((direction) {
+            context.read<DataProvider>().deleteRoutine(routine);
+          }),
+          direction: DismissDirection.endToStart,
+          key: ValueKey(routine),
+          background: Container(
+            padding: const EdgeInsets.only(right: 40),
+            alignment: Alignment.centerRight,
+            color: Colors.red,
+            child: const Icon(
               Icons.delete,
-              color: Colors.red,
-              size: 40,
+              color: Colors.white,
             ),
-            crossFadeState:
-                _first ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          ),
+          child: Container(
+            color: const Color(0xFF52796F),
+            child: Center(
+              child: Text(routine.title),
+            ),
           ),
         ),
       ),

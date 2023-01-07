@@ -6,6 +6,7 @@ import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Database/Models/task_model.dart';
 import 'package:backupmanager/data_provider.dart';
 import 'package:backupmanager/Tasks/task_view.dart';
+import 'package:backupmanager/Tasks/task_executor.dart';
 
 class RoutineView extends StatelessWidget {
   static const String route = "/routine";
@@ -20,7 +21,10 @@ class RoutineView extends StatelessWidget {
     List<TaskView> children = [];
     for (Task task in context.watch<DataProvider>().tasks) {
       if (task.routineId == routine.id) {
-        children.add(TaskView(task));
+        children.add(TaskView(
+          task,
+          taskExecutor: TaskExecutor(task.command),
+        ));
       }
     }
 

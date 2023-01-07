@@ -6,6 +6,7 @@ import 'package:backupmanager/Tasks/task_create_view.dart';
 import 'package:backupmanager/Routines/routine_grid_view.dart';
 import 'package:backupmanager/Routines/routine_view.dart';
 import 'package:backupmanager/data_provider.dart';
+import 'package:backupmanager/button_provider.dart';
 
 Map<int, Color> colorMap = {
   50: const Color(0xFF354f52).withOpacity(.1),
@@ -24,11 +25,13 @@ void main() async {
   DataProvider dataProvider = DataProvider();
   await dataProvider.init();
   runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(
-        create: (_) => dataProvider,
-      ),
-    ], child: const MyApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => dataProvider),
+        ChangeNotifierProvider(create: (_) => ButtonProvider()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

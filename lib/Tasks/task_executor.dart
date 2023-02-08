@@ -3,6 +3,7 @@ import 'dart:io';
 
 class TaskExecutor {
   String commandString;
+  bool dryRun = false;
   late Future<ProcessResult> command;
   final _controller = StreamController<String>();
 
@@ -23,8 +24,17 @@ class TaskExecutor {
   Stream<String> get stream => _controller.stream;
 
   void convertCommand() {
-    List<String> commandArgs =
-        commandString.replaceFirst("rsync ", "").split(" ");
+    List<String> commandArgs = commandString
+        .replaceFirst("rsync ", "")
+        .replaceAll("\\ ", "####")
+        .split(" ");
+    for (String command in commandArgs) {
+      commandArgs[commandArgs.indexOf(command)] =
+          command.replaceAll("####", " ");
+    }
+    if (dryRun) {
+      commandArgs.insert(0, "-n");
+    }
     command = Process.run("rsync", commandArgs);
   }
 }

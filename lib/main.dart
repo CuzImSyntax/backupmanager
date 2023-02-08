@@ -30,13 +30,13 @@ void main() async {
         ChangeNotifierProvider(create: (_) => dataProvider),
         ChangeNotifierProvider(create: (_) => ButtonProvider()),
       ],
-      child: const MyApp(),
+      child: const Backupmanager(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Backupmanager extends StatelessWidget {
+  const Backupmanager({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: MaterialColor(0xFF354f52, colorMap),
         scaffoldBackgroundColor: const Color(0xFF2f3e46),
       ),
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      home: const BackupmanagerPage(),
       routes: {
         RoutineView.route: (context) => const RoutineView(),
         RoutineCreateView.route: (context) => const RoutineCreateView(),
@@ -60,8 +61,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class BackupmanagerPage extends StatelessWidget {
+  const BackupmanagerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

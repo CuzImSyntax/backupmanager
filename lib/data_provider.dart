@@ -21,20 +21,6 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return true;
   }
 
-  // Future<List<Routine>> getRoutines() async {
-  //   if (!_initialized) {
-  //     await init();
-  //   }
-  //   return routines;
-  // }
-
-  // Future<List<Task>> getTasks() async {
-  //   if (!_initialized) {
-  //     await init();
-  //   }
-  //   return tasks;
-  // }
-
   Future<void> insertRoutine(Routine routine) async {
     Routine newRoutine = await db.insertRoutine(routine);
     routines.add(newRoutine);

@@ -63,10 +63,10 @@ class _RoutineCreateViewState extends State<TaskCreateView> {
       padding: const EdgeInsets.all(20),
       child: TextField(
         controller: controller,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
         cursorColor: Colors.white,
         decoration: InputDecoration(
-          labelStyle: Theme.of(context).textTheme.bodyText1,
+          labelStyle: Theme.of(context).textTheme.bodyLarge,
           border: const OutlineInputBorder(),
           labelText: label,
         ),

@@ -24,9 +24,9 @@ class RoutineCreateView extends StatelessWidget {
             Navigator.pop(context);
           },
           cursorColor: Colors.white,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
-            labelStyle: Theme.of(context).textTheme.bodyText1,
+            labelStyle: Theme.of(context).textTheme.bodyLarge,
             border: const OutlineInputBorder(),
             labelText: "Name",
           ),

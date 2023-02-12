@@ -5,8 +5,8 @@ import 'package:backupmanager/Routines/routine_create_view.dart';
 import 'package:backupmanager/Tasks/task_create_view.dart';
 import 'package:backupmanager/Routines/routine_grid_view.dart';
 import 'package:backupmanager/Routines/routine_view.dart';
-import 'package:backupmanager/data_provider.dart';
-import 'package:backupmanager/button_provider.dart';
+import 'package:backupmanager/Provider/data_provider.dart';
+import 'package:backupmanager/Provider/button_provider.dart';
 
 Map<int, Color> colorMap = {
   50: const Color(0xFF354f52).withOpacity(.1),

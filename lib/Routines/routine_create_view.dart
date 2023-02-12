@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:backupmanager/templates/default_view.dart';
-import 'package:backupmanager/data_provider.dart';
+import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 
 class RoutineCreateView extends StatelessWidget {

@@ -1,10 +1,10 @@
-import 'package:backupmanager/button_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:backupmanager/Database/Models/task_model.dart';
 import 'package:backupmanager/Tasks/task_executor.dart';
-import 'package:backupmanager/data_provider.dart';
+import 'package:backupmanager/Provider/button_provider.dart';
+import 'package:backupmanager/Provider/data_provider.dart';
 
 class TaskCard extends StatelessWidget {
   final String? text;

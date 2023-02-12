@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:backupmanager/templates/default_view.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Database/Models/task_model.dart';
-import 'package:backupmanager/data_provider.dart';
+import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Tasks/task_view.dart';
 import 'package:backupmanager/Tasks/task_executor.dart';
 

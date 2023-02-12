@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backupmanager/Database/Models/routine_model.dart';
-import 'package:backupmanager/data_provider.dart';
+import 'package:backupmanager/Provider/data_provider.dart';
 
 class RoutineCard extends StatelessWidget {
   final Routine routine;

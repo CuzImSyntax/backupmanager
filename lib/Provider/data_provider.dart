@@ -1,3 +1,4 @@
+import 'package:backupmanager/Database/Models/preset_model.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:backupmanager/Database/database_manager.dart';
@@ -9,15 +10,16 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   late List<Routine> routines;
   bool _initialsfsd = false;
   late List<Task> tasks;
+  late List<Preset> presets;
 
   Future<bool> init() async {
     if (!_initialsfsd) {
       routines = await db.getRoutines();
       tasks = await db.getTasks();
+      presets = await db.getPresets();
       _initialsfsd = true;
       notifyListeners();
     }
-
     return true;
   }
 
@@ -42,6 +44,22 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   Future<void> deleteTask(Task task) async {
     await db.deleteTask(task);
     tasks.remove(task);
+    notifyListeners();
+  }
+
+  Future<void> insertPreset(Preset preset) async {
+    if (presets.isNotEmpty) {
+      await deletePreset(presets.first);
+    }
+    Preset newPreset = await db.insertPreset(preset);
+
+    presets.add(newPreset);
+    notifyListeners();
+  }
+
+  Future<void> deletePreset(Preset preset) async {
+    await db.deletePreset(preset);
+    presets.remove(preset);
     notifyListeners();
   }
 }

@@ -24,17 +24,13 @@ class TaskExecutor {
   Stream<String> get stream => _controller.stream;
 
   void convertCommand() {
-    List<String> commandArgs = commandString
-        .replaceFirst("rsync ", "")
-        .replaceAll("\\ ", "####")
-        .split(" ");
-    for (String command in commandArgs) {
-      commandArgs[commandArgs.indexOf(command)] =
-          command.replaceAll("####", " ");
-    }
+    List<String> commandArgs = [];
+
     if (dryRun) {
-      commandArgs.insert(0, "-n");
+      commandArgs.add("-n");
     }
+    commandArgs = commandString.split(";");
+
     command = Process.run("rsync", commandArgs);
   }
 }

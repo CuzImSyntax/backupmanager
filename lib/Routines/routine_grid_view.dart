@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:backupmanager/templates/default_view.dart';
+import 'package:backupmanager/utils/templates/default_view.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Routines/routine_card.dart';

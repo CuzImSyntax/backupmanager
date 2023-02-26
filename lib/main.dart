@@ -51,21 +51,12 @@ class Backupmanager extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF2f3e46),
       ),
       debugShowCheckedModeBanner: false,
-      home: const BackupmanagerPage(),
+      home: const RoutineGridView(),
       routes: {
         RoutineView.route: (context) => const RoutineView(),
         RoutineCreateView.route: (context) => const RoutineCreateView(),
         TaskCreateView.route: (context) => const TaskCreateView(),
       },
     );
-  }
-}
-
-class BackupmanagerPage extends StatelessWidget {
-  const BackupmanagerPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const RoutineGridView();
   }
 }

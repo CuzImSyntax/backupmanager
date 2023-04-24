@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:backupmanager/Database/Models/task_model.dart';
+
 class TaskExecutor {
-  int id;
-  String commandString;
+  final Task task;
   bool dryRun = false;
   bool success = true;
   late Future<ProcessResult> command;
@@ -11,7 +12,7 @@ class TaskExecutor {
   // We need this boolean to check when to rebuild the widget, as closing is with WillPopScope will result in Backups getting inserted also when it is a DryRun.
   bool rebuildNeeded = false;
 
-  TaskExecutor(this.id, this.commandString); //ToDo Refactor this
+  TaskExecutor(this.task);
 
   Future<void> run() async {
     _controller.sink.add("Starting");
@@ -41,7 +42,7 @@ class TaskExecutor {
     if (dryRun) {
       commandArgs.add("-n");
     }
-    commandArgs = commandString.split(";");
+    commandArgs = task.command.split(";");
 
     command = Process.run("rsync", commandArgs);
   }

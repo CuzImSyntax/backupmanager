@@ -116,15 +116,16 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   // We now set an indicator after popping to refresh the taskExecutor, when openin the view again.
   void initTaskExecutors() {
     for (Task task in tasks) {
-      taskExecutors.add(TaskExecutor(task.id!, task.command));
+      taskExecutors.add(TaskExecutor(task));
     }
   }
 
   TaskExecutor getTaskExecutor(Task task) {
-    return taskExecutors.firstWhere((element) => element.id == task.id);
+    return taskExecutors.firstWhere((element) => element.task.id == task.id);
   }
 
   void replaceTaskExecutor(TaskExecutor _taskExecutor) {
-    taskExecutors.removeWhere((element) => element.id == _taskExecutor.id);
+    taskExecutors
+        .removeWhere((element) => element.task.id == _taskExecutor.task.id);
   }
 }

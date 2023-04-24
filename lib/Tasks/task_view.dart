@@ -16,38 +16,44 @@ class TaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: taskExecutor.stream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        Widget statusWidget = const Icon(
-          Icons.schedule,
-          color: Colors.white,
-        );
-        if (snapshot.connectionState == ConnectionState.active) {
-          statusWidget = const CircularProgressIndicator(
+    return WillPopScope(
+      onWillPop: () async {
+        taskExecutor.rebuildNeeded = true;
+        return Future.value(true);
+      },
+      child: StreamBuilder(
+        stream: taskExecutor.stream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          Widget statusWidget = const Icon(
+            Icons.schedule,
             color: Colors.white,
           );
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          statusWidget = const Icon(
-            Icons.done,
-            color: Colors.greenAccent,
-          );
-        }
-        if (snapshot.hasError) {
-          statusWidget = const Icon(
-            Icons.close,
-            color: Colors.red,
-          );
-        }
-        if (snapshot.hasError) {
-          return taskRow(statusWidget, text: snapshot.error.toString());
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          return taskRow(statusWidget, text: snapshot.data);
-        }
-        return taskRow(statusWidget);
-      },
+          if (snapshot.connectionState == ConnectionState.active) {
+            statusWidget = const CircularProgressIndicator(
+              color: Colors.white,
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            statusWidget = const Icon(
+              Icons.done,
+              color: Colors.greenAccent,
+            );
+          }
+          if (snapshot.hasError) {
+            statusWidget = const Icon(
+              Icons.close,
+              color: Colors.red,
+            );
+          }
+          if (snapshot.hasError) {
+            return taskRow(statusWidget, text: snapshot.error.toString());
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return taskRow(statusWidget, text: snapshot.data);
+          }
+          return taskRow(statusWidget);
+        },
+      ),
     );
   }
 

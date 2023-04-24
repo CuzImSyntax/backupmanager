@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:backupmanager/Database/Models/task_model.dart';
+import 'package:backupmanager/Database/Models/task_backup_model.dart';
 import 'package:backupmanager/Tasks/task_executor.dart';
 import 'package:backupmanager/Provider/button_provider.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
+import 'package:backupmanager/utils/templates/last_backup_indicator.dart';
 
 class TaskCard extends StatelessWidget {
   final String? text;
@@ -51,17 +53,25 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget taskCardContainer(BuildContext context) {
+    TaskBackup? latestBackup =
+        context.watch<DataProvider>().getLatestTaskBackup(task);
     return Column(
       children: [
         ListTile(
           title: Text(task.name),
-          subtitle: SelectableText(
-            task.command,
-            maxLines: 1,
-          ),
+          subtitle: LastBackupIndicator(latestBackup?.timestamp),
           leading: GestureDetector(
             onTap: () async {
               await taskExecutor.run();
+              if (!taskExecutor.dryRun) {
+                await context.read<DataProvider>().insertTaskBackup(
+                      TaskBackup(
+                        taskId: task.id!,
+                        timestamp: DateTime.now().millisecondsSinceEpoch,
+                        success: taskExecutor.success,
+                      ),
+                    );
+              }
             },
             child: const Icon(
               Icons.play_arrow,

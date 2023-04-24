@@ -40,6 +40,7 @@ dependencies:
   sqflite_common_ffi: ^2.1.1+1
   path_provider: ^2.0.11
   marquee: ^2.2.1
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

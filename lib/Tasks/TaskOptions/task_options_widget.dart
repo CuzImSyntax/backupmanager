@@ -50,7 +50,11 @@ class _TaskOptionsWidgetState extends State<TaskOptionsWidget> {
 
   void retrieveSavedState() {
     setState(() {
-      Preset preset = context.read<DataProvider>().presets.first;
+      List<Preset> presets = context.read<DataProvider>().presets;
+      if (presets.isEmpty) {
+        return; // No preset saved yet
+      }
+      Preset preset = presets.first;
       for (TaskOption taskOption in taskOptions) {
         if (preset.commandsOptions.contains(taskOption.name)) {
           taskOption.isSelected = true;

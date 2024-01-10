@@ -39,6 +39,9 @@ class TaskOptionUtils {
         commandString += "--exclude=$path;";
       }
     }
+    if (commandString.endsWith(";")) {
+      commandString = commandString.substring(0, commandString.length - 1);
+    }
     return commandString;
   }
 }

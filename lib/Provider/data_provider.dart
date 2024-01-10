@@ -48,15 +48,17 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  Future<void> insertTask(Task task) async {
+  Future<Task> insertTask(Task task) async {
     Task newTask = await db.insertTask(task);
     tasks.add(newTask);
     notifyListeners();
+    return newTask;
   }
 
   Future<void> deleteTask(Task task) async {
     await db.deleteTask(task);
     tasks.remove(task);
+    deleteTaskExecutor(task);
     notifyListeners();
   }
 
@@ -124,8 +126,13 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return taskExecutors.firstWhere((element) => element.task.id == task.id);
   }
 
-  void replaceTaskExecutor(TaskExecutor _taskExecutor) {
-    taskExecutors
-        .removeWhere((element) => element.task.id == _taskExecutor.task.id);
+  void addTaskExecutor(Task task) {
+    taskExecutors.add(TaskExecutor(task));
+    notifyListeners();
+  }
+
+  void deleteTaskExecutor(Task task) {
+    taskExecutors.removeWhere((element) => element.task.id == task.id);
+    notifyListeners();
   }
 }

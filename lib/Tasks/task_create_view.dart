@@ -104,12 +104,14 @@ class _CreateTaskButton extends StatelessWidget {
               backupDirController: backupDirController,
               excludePaths: excludePaths,
             );
-            await context.read<DataProvider>().insertTask(
+            Task task = await context.read<DataProvider>().insertTask(
                   Task(
-                      routineId: routine.id!,
-                      name: nameController.text,
-                      command: command),
+                    routineId: routine.id!,
+                    name: nameController.text,
+                    command: command,
+                  ),
                 );
+            context.read<DataProvider>().addTaskExecutor(task);
             Navigator.pop(
               context,
             );

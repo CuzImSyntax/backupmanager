@@ -32,7 +32,7 @@ mixin TaskBackupDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     int id = await database.insert("task_backups", taskBackup.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    close(database);
+    await close(database);
     return TaskBackup(
       id: id,
       routineBackupId: taskBackup.routineBackupId,
@@ -46,7 +46,7 @@ mixin TaskBackupDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     final List<Map<String, dynamic>> maps =
         await database.query("task_backups");
-    close(database);
+    await close(database);
 
     return List.generate(maps.length, (index) {
       return TaskBackup(

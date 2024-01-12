@@ -26,7 +26,7 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     int id = await database.insert("routine_backups", routineBackup.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    close(database);
+    await close(database);
     return RoutineBackup(
       id: id,
       routineId: routineBackup.routineId,
@@ -38,7 +38,7 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     final List<Map<String, dynamic>> maps =
         await database.query("routine_backups");
-    close(database);
+    await close(database);
 
     return List.generate(maps.length, (index) {
       return RoutineBackup(

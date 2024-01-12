@@ -23,14 +23,14 @@ mixin PresetDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     int id = await database.insert("presets", preset.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    close(database);
+    await close(database);
     return Preset(id: id, commandString: preset.commandString);
   }
 
   Future<List<Preset>> getPresets() async {
     Database database = await init();
     final List<Map<String, dynamic>> maps = await database.query("presets");
-    close(database);
+    await close(database);
 
     return List.generate(maps.length, (index) {
       return Preset(
@@ -43,6 +43,6 @@ mixin PresetDatabaseOptions implements ModelDatabaseBase {
   Future<void> deletePreset(Preset preset) async {
     Database database = await init();
     await database.delete("presets", where: "id = ?", whereArgs: [preset.id]);
-    close(database);
+    await close(database);
   }
 }

@@ -29,7 +29,7 @@ mixin TaskDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     int id = await database.insert("tasks", task.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    close(database);
+    await close(database);
     return Task(
       id: id,
       routineId: task.routineId,
@@ -41,7 +41,7 @@ mixin TaskDatabaseOptions implements ModelDatabaseBase {
   Future<List<Task>> getTasks() async {
     Database database = await init();
     final List<Map<String, dynamic>> maps = await database.query("tasks");
-    close(database);
+    await close(database);
 
     return List.generate(maps.length, (index) {
       return Task(
@@ -56,6 +56,6 @@ mixin TaskDatabaseOptions implements ModelDatabaseBase {
   Future<void> deleteTask(Task task) async {
     Database database = await init();
     await database.delete("tasks", where: "id = ?", whereArgs: [task.id]);
-    close(database);
+    await close(database);
   }
 }

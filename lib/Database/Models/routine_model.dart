@@ -21,14 +21,14 @@ mixin RoutineDatabaseOptions implements ModelDatabaseBase {
     Database database = await init();
     int id = await database.insert("routines", routine.toMap(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    close(database);
+    await close(database);
     return Routine(id: id, title: routine.title);
   }
 
   Future<List<Routine>> getRoutines() async {
     Database database = await init();
     final List<Map<String, dynamic>> maps = await database.query("routines");
-    close(database);
+    await close(database);
 
     return List.generate(maps.length, (index) {
       return Routine(
@@ -41,6 +41,6 @@ mixin RoutineDatabaseOptions implements ModelDatabaseBase {
   Future<void> deleteRoutine(Routine routine) async {
     Database database = await init();
     await database.delete("routines", where: "id = ?", whereArgs: [routine.id]);
-    close(database);
+    await close(database);
   }
 }

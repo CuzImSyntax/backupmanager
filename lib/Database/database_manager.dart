@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:backupmanager/Database/migration_manager.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
@@ -22,23 +23,33 @@ class DatabaseManager
     sqfliteFfiInit();
     Directory dir = await getApplicationDocumentsDirectory();
     var databaseFactory = databaseFactoryFfi;
+    await MigrationManager().getMigrations();
     Database database = await databaseFactory
         .openDatabase(join(dir.path, 'backupmanager/db/database.db'));
-    await database.execute(
-        "CREATE TABLE IF NOT EXISTS routines (id INTEGER PRIMARY KEY NOT NULL, title TEXT NOT NULL)");
-    await database.execute(
-        "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY NOT NULL, routineId INTEGER NOT NULL, name TEXT NOT NULL, command TEXT NOT NULL, FOREIGN KEY(routineId) REFERENCES routines(id))");
-    await database.execute(
-        "CREATE TABLE IF NOT EXISTS presets (id INTEGER PRIMARY KEY NOT NULL, commandString TEXT NOT NULL)");
-    await database.execute(
-        "CREATE TABLE IF NOT EXISTS routine_backups (id INTEGER PRIMARY KEY NOT NULL, routineId INTEGER NOT NULL, timestamp INTEGER NOT NULL, FOREIGN KEY(routineId) REFERENCES routines(id))");
-    await database.execute(
-        "CREATE TABLE IF NOT EXISTS task_backups (id INTEGER PRIMARY KEY NOT NULL, routineBackupId INTEGER, taskId INTEGER NOT NULL, timestamp INTEGER NOT NULL, success INTEGER NOT NULL, FOREIGN KEY(routineBackupId) REFERENCES routine_backups(id), FOREIGN KEY(taskId) REFERENCES tasks(id))");
+
+    // Enable FOREIGN KEYs
+    await database.execute("PRAGMA foreign_keys = ON");
+
+    MigrationManager migrationManager = MigrationManager();
+
+    int index = await migrationManager.getMigrationIndex();
+    Map<int, List<String>> migrations = await migrationManager.getMigrations();
+
+    migrations.forEach(
+      (key, value) async {
+        if (key > index) {
+          for (String query in value) {
+            await database.execute(query);
+          }
+          await migrationManager.setMigrationIndex(key);
+        }
+      },
+    );
     return database;
   }
 
   @override
-  void close(Database database) async {
+  Future<void> close(Database database) async {
     await database.close();
   }
 }

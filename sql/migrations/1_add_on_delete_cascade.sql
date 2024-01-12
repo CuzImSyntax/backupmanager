@@ -1,0 +1,16 @@
+PRAGMA foreign_keys=off;
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS new_routine_backups (id INTEGER PRIMARY KEY NOT NULL, routineId INTEGER NOT NULL, timestamp INTEGER NOT NULL, CONSTRAINT routineIdFK FOREIGN KEY(routineId) REFERENCES routines(id) ON DELETE CASCADE);
+INSERT INTO new_routine_backups SELECT * FROM routine_backups;
+DROP TABLE routine_backups;
+ALTER TABLE new_routine_backups RENAME TO routine_backups;
+CREATE TABLE IF NOT EXISTS new_task_backups (id INTEGER PRIMARY KEY NOT NULL, routineBackupId INTEGER, taskId INTEGER NOT NULL, timestamp INTEGER NOT NULL, success INTEGER NOT NULL, CONSTRAINT routineBackupIDFK FOREIGN KEY(routineBackupId) REFERENCES routine_backups(id) ON DELETE CASCADE, CONSTRAINT taskIdFK FOREIGN KEY(taskId) REFERENCES tasks(id) ON DELETE CASCADE);
+INSERT INTO new_task_backups SELECT * FROM task_backups;
+DROP TABLE task_backups;
+ALTER TABLE new_task_backups RENAME TO task_backups;
+CREATE TABLE IF NOT EXISTS new_tasks (id INTEGER PRIMARY KEY NOT NULL, routineId INTEGER NOT NULL, name TEXT NOT NULL, command TEXT NOT NULL, CONSTRAINT routineIdFK FOREIGN KEY(routineId) REFERENCES routines(id) ON DELETE CASCADE);
+INSERT INTO new_tasks SELECT * FROM tasks;
+DROP TABLE tasks;
+ALTER TABLE new_tasks RENAME TO tasks;
+COMMIT;
+PRAGMA foreign_keys=on;

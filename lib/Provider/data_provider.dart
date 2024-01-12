@@ -21,19 +21,26 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<bool> init() async {
     if (!_intitialized) {
-      routines = await db.getRoutines();
-      tasks = await db.getTasks();
-      presets = await db.getPresets();
-      routineBackups = await db.getRoutineBackups();
-      taskBackups = await db.getTaskBackups();
-
-      // Cache the taskExecutors
-      initTaskExecutors();
+      await reload();
 
       _intitialized = true;
-      notifyListeners();
     }
     return true;
+  }
+
+  // We need to call this after reloading, as deleting a Routine / Task
+  // Otherwise when something gets deleted through FOREIGN KEYs, they are still present in the Data Provider.
+  Future<void> reload() async {
+    routines = await db.getRoutines();
+    tasks = await db.getTasks();
+    presets = await db.getPresets();
+    routineBackups = await db.getRoutineBackups();
+    taskBackups = await db.getTaskBackups();
+
+    // Cache the taskExecutors
+    initTaskExecutors();
+
+    notifyListeners();
   }
 
   Future<void> insertRoutine(Routine routine) async {
@@ -45,6 +52,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   Future<void> deleteRoutine(Routine routine) async {
     await db.deleteRoutine(routine);
     routines.remove(routine);
+    await reload();
     notifyListeners();
   }
 
@@ -59,6 +67,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     await db.deleteTask(task);
     tasks.remove(task);
     deleteTaskExecutor(task);
+    await reload();
     notifyListeners();
   }
 

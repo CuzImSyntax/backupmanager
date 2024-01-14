@@ -14,7 +14,7 @@ class TaskExecutor {
 
   TaskExecutor(this.task);
 
-  Future<void> run() async {
+  Future<bool> run() async {
     _controller.sink.add("Starting");
     convertCommand();
     await for (ProcessResult result in command.asStream()) {
@@ -25,6 +25,7 @@ class TaskExecutor {
       }
     }
     _controller.sink.close();
+    return success;
   }
 
   void rebuild() {

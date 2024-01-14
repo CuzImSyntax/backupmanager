@@ -6,17 +6,20 @@ class RoutineBackup extends Object {
   final int? id;
   final int routineId;
   final int timestamp;
+  bool success;
 
-  const RoutineBackup({
+  RoutineBackup({
     this.id,
     required this.routineId,
     required this.timestamp,
+    this.success = false,
   });
 
   Map<String, dynamic> toMap() {
     return {
       "routineId": routineId,
       "timestamp": timestamp,
+      "success": success ? 1 : 0,
     };
   }
 }
@@ -31,7 +34,17 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
       id: id,
       routineId: routineBackup.routineId,
       timestamp: routineBackup.timestamp,
+      success: routineBackup.success,
     );
+  }
+
+  Future<void> updateRoutineBackup(RoutineBackup routineBackup) async {
+    if (routineBackup.id == null) return;
+
+    Database database = await init();
+    await database.update("routine_backups", routineBackup.toMap(),
+        where: "id = ?", whereArgs: [routineBackup.id]);
+    await close(database);
   }
 
   Future<List<RoutineBackup>> getRoutineBackups() async {
@@ -45,6 +58,7 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
         id: maps[index]["id"],
         routineId: maps[index]["routineId"],
         timestamp: maps[index]["timestamp"],
+        success: maps[index]["success"] == 1 ? true : false,
       );
     });
   }

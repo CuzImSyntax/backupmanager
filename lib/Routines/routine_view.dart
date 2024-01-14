@@ -93,17 +93,20 @@ class RoutineView extends StatelessWidget {
               height: 50,
               child: GestureDetector(
                 onTap: (() async {
-                  // ToDo Do we still want to insert a Backup when all of the Backups are set to DryRun?
-                  RoutineBackup routineBackup = await context
-                      .read<DataProvider>()
-                      .insertRoutineBackup(
-                        RoutineBackup(
-                            routineId: routine.id!,
-                            timestamp: DateTime.now().millisecondsSinceEpoch),
-                      );
+                  RoutineBackup routineBackup =
+                      await context.read<DataProvider>().insertRoutineBackup(
+                            RoutineBackup(
+                              routineId: routine.id!,
+                              timestamp: DateTime.now().millisecondsSinceEpoch,
+                            ),
+                          );
 
+                  bool success = true;
                   for (TaskView taskView in children) {
-                    await taskView.taskExecutor.run();
+                    bool taskStatus = await taskView.taskExecutor.run();
+                    if (!taskStatus) {
+                      success = false;
+                    }
 
                     if (!taskView.taskExecutor.dryRun) {
                       await context.read<DataProvider>().insertTaskBackup(
@@ -115,6 +118,16 @@ class RoutineView extends StatelessWidget {
                             ),
                           );
                     }
+                  }
+                  // Indicates whether one or more tasks are set to dryRun.
+                  // We only want to count a routine backup successful, when all tasks actually executed successful.
+                  bool hasDryRuns = children
+                      .any((element) => element.taskExecutor.dryRun == true);
+                  if (success && !hasDryRuns) {
+                    routineBackup.success = true;
+                    await context
+                        .read<DataProvider>()
+                        .updateRoutineBackup(routineBackup);
                   }
                 }),
                 child: const Card(

@@ -79,6 +79,11 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return newRoutineBackup;
   }
 
+  Future<void> updateRoutineBackup(RoutineBackup routineBackup) async {
+    await db.updateRoutineBackup(routineBackup);
+    notifyListeners();
+  }
+
   Future<bool> insertTaskBackup(TaskBackup taskBackup) async {
     TaskBackup newTaskBackup = await db.insertTaskBackup(taskBackup);
     taskBackups.add(newTaskBackup);
@@ -88,7 +93,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   RoutineBackup? getLatestRoutineBackup(Routine routine) {
     List<RoutineBackup> backupsByRoutine = routineBackups
-        .where((element) => element.routineId == routine.id!)
+        .where((element) => element.routineId == routine.id! && element.success)
         .toList();
 
     backupsByRoutine.sort((a, b) => a.timestamp.compareTo(b.timestamp));

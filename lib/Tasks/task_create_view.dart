@@ -8,8 +8,9 @@ import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Tasks/TaskOptions/task_options.dart';
 import 'package:backupmanager/Tasks/TaskOptions/task_options_widget.dart';
 import 'package:backupmanager/utils/text_field_widget.dart';
-import 'package:backupmanager/utils/task_option_utils.dart';
+import 'package:backupmanager/utils/task_creation_utils.dart';
 
+/// The view shown when creating a new [Task].
 class TaskCreateView extends StatefulWidget {
   static const String route = "/task/create";
   const TaskCreateView({Key? key}) : super(key: key);
@@ -73,6 +74,7 @@ class _RoutineCreateViewState extends State<TaskCreateView> {
   }
 }
 
+/// The button in the [TaskCreateView] saving the new task to the database.
 class _CreateTaskButton extends StatelessWidget {
   final Routine routine;
   final TextEditingController nameController;
@@ -98,7 +100,7 @@ class _CreateTaskButton extends StatelessWidget {
         onPressed: () async {
           if (nameController.text.isNotEmpty &&
               sourceController.text.isNotEmpty) {
-            String command = TaskOptionUtils.buildCommandString(
+            String command = TaskCreationUtils.buildCommandString(
               sourceController: sourceController,
               destinationController: destinationController,
               backupDirController: backupDirController,

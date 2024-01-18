@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
 
+/// The card representing a [Routine] in the main view of the application.
 class RoutineCard extends StatelessWidget {
   final Routine routine;
 

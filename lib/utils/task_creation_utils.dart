@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:backupmanager/Tasks/TaskOptions/task_options.dart';
 
-class TaskOptionUtils {
+/// Utils used for Task creation.
+class TaskCreationUtils {
+  /// Builds a command string that gets saved in the db.
+  ///
+  /// The String is created based on the [sourceController],[destinationController], [backupdDirController] and the [excludePaths].
+  /// The String is a rsync command, where every argument is seperated by a `;`.
   static String buildCommandString({
+    /// Whether the source and destination should be included.
+    ///
+    /// This is included as presets are saved without the paths.
     bool includePaths = true,
     TextEditingController? sourceController,
     TextEditingController? destinationController,

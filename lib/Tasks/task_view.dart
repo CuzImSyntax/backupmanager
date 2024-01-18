@@ -4,6 +4,9 @@ import 'package:backupmanager/Database/Models/task_model.dart';
 import 'package:backupmanager/Tasks/task_card.dart';
 import 'package:backupmanager/Tasks/task_executor.dart';
 
+/// The View for a [Task] in the [RoutineDetailView].
+///
+/// This includes a status icon, whether the backup is running, succeeded or failed, and the [TaskCard].
 class TaskView extends StatelessWidget {
   final Task task;
   final TaskExecutor taskExecutor;
@@ -57,6 +60,7 @@ class TaskView extends StatelessWidget {
     );
   }
 
+  /// The row holding the [taskIcon] and the [TaskCard].
   Widget taskRow(Widget statusWidget, {String? text}) {
     return Container(
       margin: const EdgeInsets.only(top: 5),
@@ -74,6 +78,7 @@ class TaskView extends StatelessWidget {
     );
   }
 
+  /// The status Icon for a [TaskView].
   Widget taskIcon(Widget statusWidget) {
     return Container(
       width: 50,

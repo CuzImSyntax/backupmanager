@@ -1,15 +1,28 @@
+import 'package:backupmanager/Database/Models/database_object.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import 'package:backupmanager/Database/Models/model_database_base.dart';
 
-class TaskBackup extends Object {
+/// Represents a TaskBackup model from the database.
+class TaskBackup extends DatabaseObject {
+  /// The id of the task backup.
   final int? id;
+
+  /// The optional id of the routine backup.
+  ///
+  /// A [TaskBackup] could belong to a [RoutineBackup] in case the Task Backup was triggered through a routine backup.
   final int? routineBackupId;
+
+  /// The if of the task the routine backup belongs to.
   final int taskId;
+
+  /// The timestamp of the backup.
   final int timestamp;
+
+  /// Whether the backup was successful.
   final bool success;
 
-  const TaskBackup({
+  TaskBackup({
     this.id,
     this.routineBackupId,
     required this.taskId,
@@ -17,6 +30,7 @@ class TaskBackup extends Object {
     required this.success,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "routineBackupId": routineBackupId,
@@ -27,7 +41,9 @@ class TaskBackup extends Object {
   }
 }
 
+/// Mixin to get and insert tasks backups from the database.
 mixin TaskBackupDatabaseOptions implements ModelDatabaseBase {
+  /// Inserts a given [taskBackup] to the database.
   Future<TaskBackup> insertTaskBackup(TaskBackup taskBackup) async {
     Database database = await init();
     int id = await database.insert("task_backups", taskBackup.toMap(),
@@ -42,6 +58,7 @@ mixin TaskBackupDatabaseOptions implements ModelDatabaseBase {
     );
   }
 
+  /// Returns a list of all [TaskBackup]s saved in the database.
   Future<List<TaskBackup>> getTaskBackups() async {
     Database database = await init();
     final List<Map<String, dynamic>> maps =

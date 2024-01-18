@@ -6,6 +6,10 @@ import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Routines/routine_card.dart';
 
+/// The Grid View listing all the [RoutineCard]s in the main view of the application
+///
+/// This currently presents the [RoutineCard]s in rows of two.
+/// For each [Routine] one [RoutineCard] is shown in this view.
 class RoutineGridView extends StatelessWidget {
   const RoutineGridView({Key? key}) : super(key: key);
 

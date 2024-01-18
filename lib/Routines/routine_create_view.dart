@@ -6,6 +6,7 @@ import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Database/Models/routine_model.dart';
 import 'package:backupmanager/utils/text_field_widget.dart';
 
+/// The view shown when creating a new [Routine].
 class RoutineCreateView extends StatelessWidget {
   static const String route = "/routine/create";
 

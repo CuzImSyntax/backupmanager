@@ -8,6 +8,9 @@ import 'package:backupmanager/Provider/button_provider.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/utils/templates/last_backup_indicator.dart';
 
+/// The card for a [Task] which is part of the [TaskView]
+///
+/// The card has a run button, information about the last backup aswell as an option to run as a `Dry run`.
 class TaskCard extends StatelessWidget {
   final String? text;
   final Task task;
@@ -52,6 +55,9 @@ class TaskCard extends StatelessWidget {
     );
   }
 
+  /// The actual implementation of the ListTile.
+  ///
+  /// Holds the run button last backup information and the dry Run button.
   Widget taskCardContainer(BuildContext context) {
     TaskBackup? latestBackup =
         context.watch<DataProvider>().getLatestTaskBackup(task);
@@ -116,19 +122,6 @@ class TaskCard extends StatelessWidget {
               )
             : const SizedBox.shrink()
       ],
-    );
-  }
-
-  Widget removeContainer() {
-    return const Center(
-      child: SizedBox(
-        height: 64,
-        child: Icon(
-          Icons.delete,
-          color: Colors.red,
-          size: 40,
-        ),
-      ),
     );
   }
 }

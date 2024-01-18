@@ -1,4 +1,4 @@
-import 'package:backupmanager/utils/task_option_utils.dart';
+import 'package:backupmanager/utils/task_creation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +38,7 @@ class _TaskOptionsWidgetState extends State<TaskOptionsWidget> {
   }
 
   Future<void> saveCurrentState() async {
-    String commandString = TaskOptionUtils.buildCommandString(
+    String commandString = TaskCreationUtils.buildCommandString(
       includePaths: false,
       backupDirController: backupDirController,
       excludePaths: excludePaths,

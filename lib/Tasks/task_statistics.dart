@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 
+/// Converts a rsync shell output in a class by filtering important values.
+///
+/// This filters created files, ... with regexes.
 class TaskStatistics {
   final String filesTotal;
   final String files;

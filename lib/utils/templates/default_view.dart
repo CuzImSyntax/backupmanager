@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Base widget for all pages.
+///
+/// Returns an Scaffold including an AppBar and centers the given body.
 class DefaultContainerWrapper extends StatelessWidget {
   final Widget body;
   final String title;

@@ -1,11 +1,20 @@
+import 'package:backupmanager/Database/Models/database_object.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 import 'package:backupmanager/Database/Models/model_database_base.dart';
 
-class RoutineBackup extends Object {
+/// Represents a RoutineBackup model from the database.
+class RoutineBackup extends DatabaseObject {
+  /// The id of the routine backup.
   final int? id;
+
+  /// The id of the routine the routine backup belongs to.
   final int routineId;
+
+  /// The timestamp of the backup.
   final int timestamp;
+
+  /// Whether the backup was successful.
   bool success;
 
   RoutineBackup({
@@ -15,6 +24,7 @@ class RoutineBackup extends Object {
     this.success = false,
   });
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "routineId": routineId,
@@ -24,7 +34,9 @@ class RoutineBackup extends Object {
   }
 }
 
+/// Mixin to get and insert routine backups from the database.
 mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
+  /// Inserts a given [routineBackup] to the database.
   Future<RoutineBackup> insertRoutineBackup(RoutineBackup routineBackup) async {
     Database database = await init();
     int id = await database.insert("routine_backups", routineBackup.toMap(),
@@ -38,6 +50,9 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
     );
   }
 
+  /// Update the given [routineBackup] in the database.
+  ///
+  /// For that the [RoutineBackup] already needs to have an id (be existent in the DB).
   Future<void> updateRoutineBackup(RoutineBackup routineBackup) async {
     if (routineBackup.id == null) return;
 
@@ -47,6 +62,7 @@ mixin RoutineBackupDatabaseOptions implements ModelDatabaseBase {
     await close(database);
   }
 
+  /// Returns a list of all [RoutineBackup]s saved in the database.
   Future<List<RoutineBackup>> getRoutineBackups() async {
     Database database = await init();
     final List<Map<String, dynamic>> maps =

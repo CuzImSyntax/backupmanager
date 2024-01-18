@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:backupmanager/utils/time_utils.dart';
 
+/// Widget showing the time of the last backup.
+///
+/// Based on a given [timestamp] this returns a widget showing the last valid backup.
+/// A Icon also indicates whether a new backup is needed.
 class LastBackupIndicator extends StatelessWidget {
   final int? timestamp;
 

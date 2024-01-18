@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-//ToDo Make controller optional
+/// A custom (styled) TextField used across the project.
+///
+/// This adds a [Padding] of 10 to the top and the bottom
+/// It also adds an [OutlineInputBorder].
+/// It can be constructed with a text [label], a [controller] and a [onSubmitted] function.
 class TextFieldWidget extends StatelessWidget {
   final String label;
   final TextEditingController? controller;

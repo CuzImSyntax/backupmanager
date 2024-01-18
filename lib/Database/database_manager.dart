@@ -11,6 +11,7 @@ import 'package:backupmanager/Database/Models/preset_model.dart';
 import 'package:backupmanager/Database/Models/routine_backups_model.dart';
 import 'package:backupmanager/Database/Models/task_backup_model.dart';
 
+/// This class bundles all DatabaseOption mixins to one point.
 class DatabaseManager
     with
         RoutineDatabaseOptions,
@@ -18,6 +19,9 @@ class DatabaseManager
         PresetDatabaseOptions,
         RoutineBackupDatabaseOptions,
         TaskBackupDatabaseOptions {
+  /// Initializes the database.
+  ///
+  /// Intially creates the database and applies all migrations to it.
   @override
   Future<Database> init() async {
     sqfliteFfiInit();
@@ -48,6 +52,7 @@ class DatabaseManager
     return database;
   }
 
+  /// Closes the connection to the database.
   @override
   Future<void> close(Database database) async {
     await database.close();

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:backupmanager/Routines/routine_create_view.dart';
 import 'package:backupmanager/Tasks/task_create_view.dart';
 import 'package:backupmanager/Routines/routine_grid_view.dart';
-import 'package:backupmanager/Routines/routine_view.dart';
+import 'package:backupmanager/Routines/routine_detail_view.dart';
 import 'package:backupmanager/Provider/data_provider.dart';
 import 'package:backupmanager/Provider/button_provider.dart';
 
@@ -53,7 +53,7 @@ class Backupmanager extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const RoutineGridView(),
       routes: {
-        RoutineView.route: (context) => const RoutineView(),
+        RoutineDetailView.route: (context) => const RoutineDetailView(),
         RoutineCreateView.route: (context) => const RoutineCreateView(),
         TaskCreateView.route: (context) => const TaskCreateView(),
       },
